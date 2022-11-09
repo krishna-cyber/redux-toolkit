@@ -25,7 +25,13 @@ const AddForm = () => {
         <textarea {...register("content", { required: true })} />
 
         {errors.exampleRequired && <span>This field is required</span>}
-        <option value=''>Select a category</option>
+        <select {...register("user", { required: true })}>
+          Select User
+          <option value='krishna'>Krishna</option>
+          <option value='Ghanshyam'>Ghanshyam</option>
+          <option value='Balaram'>Balaram</option>
+          <option value='Shyam'>Shyam</option>
+        </select>
         <input type='submit' />
       </form>
     </div>
