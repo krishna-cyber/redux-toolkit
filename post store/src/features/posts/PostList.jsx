@@ -1,10 +1,9 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectAllUsers } from "../users/userSlice";
+
 import TimeAgo from "./TimeAgo";
 import ReactionButtons from "./ReactionButtons";
 
-import { reactionsAdded } from "./postSlice";
 import PostAuthor from "./PostAuthor";
 
 const PostList = () => {
@@ -24,7 +23,7 @@ const PostList = () => {
           key={post.id}>
           <h3 className=' font-bold text-lg'>{post.title}</h3>
           <p className=' text-slate-800 text-lg'>{post.content}</p>
-          <PostAuthor userId={post.userId} />
+          <PostAuthor userID={post.user} />
           <TimeAgo timestamp={post.date} />
 
           <ReactionButtons post={post} />

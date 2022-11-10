@@ -23,7 +23,7 @@ const AddForm = () => {
 
   const users = useSelector(selectAllUsers);
   return (
-    <div>
+    <div className=' w-1/3'>
       <h2 className=' font-bold text-blue-700'>Add New posts</h2>
       <form onSubmit={handleSubmit(savepost)} className='flex flex-col '>
         <label htmlFor='title' className=' text-bold text-2xl'>

@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <main className=' flex bg-blue-300 w-screen h-screen justify-around'>
-        <div className=' flex flex-col gap-4'>
+        <div className=' flex flex-col gap-4 w-1/2'>
           <h1 className=' font-bold text-3xl'>React App</h1>
           <PostList />
         </div>
