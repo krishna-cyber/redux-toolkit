@@ -1,8 +1,14 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
+import PostExcerpt from "./PostExcerpt";
 
-import { selectAllPosts, getPostsStatus, getPostsErrors } from "./postsSlice";
+import {
+  selectAllPosts,
+  getPostsStatus,
+  getPostsErrors,
+  fetchPosts,
+} from "./postSlice";
 
 const POSTS_URL = "https://jsonplaceholder.typicode.com/POSTS";
 
@@ -19,27 +25,23 @@ const PostList = () => {
     }
   }, [postsStatus, dispatch]);
 
-  const orderedPosts = posts
-    .slice()
-    .sort((a, b) => b.date.localeCompare(a.date));
-
-  const dispatch = useDispatch();
-
+  let content;
+  if (postsStatus === "loading") {
+    content = <div className='loader'>Loading...</div>;
+  } else if (postsStatus === "succeeded") {
+    const orderedPosts = posts
+      .slice()
+      .sort((a, b) => b.date.localeCompare(a.date));
+    content = orderedPosts.map((post) => (
+      <PostExcerpt key={post.id} post={post} />
+    ));
+  } else if (postsStatus === "failed") {
+    content = <p>{error}</p>;
+  }
   return (
     <>
       <h2 className=' font-bold text-2xl text-blue-800'>Posts</h2>
-      {orderedPosts.map((post) => (
-        <article
-          className=' border border-blue-800 p-2 rounded-lg '
-          key={post.id}>
-          <h3 className=' font-bold text-lg'>{post.title}</h3>
-          <p className=' text-slate-800 text-lg'>{post.content}</p>
-          <PostAuthor userID={post.user} />
-          <TimeAgo timestamp={post.date} />
-
-          <ReactionButtons post={post} />
-        </article>
-      ))}
+      {content}
     </>
   );
 };

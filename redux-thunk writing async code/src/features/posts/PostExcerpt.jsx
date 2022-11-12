@@ -8,7 +8,9 @@ const PostExcerpt = ({ post }) => {
       {orderedPosts.map((post) => (
         <article className=' border border-blue-800 p-2 rounded-lg '>
           <h3 className=' font-bold text-lg'>{post.title}</h3>
-          <p className=' text-slate-800 text-lg'>{post.content}</p>
+          <p className=' text-slate-800 text-lg'>
+            {post.body.subString(0, 100)}
+          </p>
           <PostAuthor userID={post.user} />
           <TimeAgo timestamp={post.date} />
 

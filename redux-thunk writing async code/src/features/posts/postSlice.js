@@ -6,7 +6,7 @@ const initialState = {
   status: "idle", // idle, loading, succeeded, failed
   errors: null,
 };
-const BASE_URL = "";
+const BASE_URL = "https://jsonplaceholder.typicode.com/posts";
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   try {
@@ -55,29 +55,26 @@ export const postSlice = createSlice({
         state.status = "succeeded";
         //Adding date and reactions
         let min = 1;
-        const loadPosts = action.payload.map((post) => {
-          post.date = sub(new Date(), { minutes: min++ }).toISOString;
-          post.reactions = {
-            thumbsUp: 0,
-            hooray: 0,
-            heart: 0,
-            rocket: 0,
-            eyes: 0,
+        const loadedPosts = action.payload.map((post) => {
+          return {
+            ...post,
+            date: sub(new Date(), { minutes: min++ }).toISOString(),
+            reactions: { thumbsUp: 0, hooray: 0, heart: 0, rocket: 0, eyes: 0 },
           };
-          return post;
         });
-        state.posts = state.posts.concat(loadPosts);
+        state.posts = state.posts.concat(loadedPosts);
+        
       })
-      .addcase(fetchPosts.rejected, (state, action) => {
+      .addCase(fetchPosts.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
   },
 });
 
-const selectAllPosts = (state) => state.posts.posts;
-const getPostsStatus = (state) => state.posts.status;
-const getPostsErrors = (state) => state.posts.errors;
+export const selectAllPosts = (state) => state.posts.posts;
+export const getPostsStatus = (state) => state.posts.status;
+export const getPostsErrors = (state) => state.posts.errors;
 
 export const { postAdded, reactionsAdded } = postSlice.actions;
 
