@@ -1,20 +1,24 @@
 import React from "react";
-import { useSelector, useDispatch, createAsyncThunk } from "react-redux";
-import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+
+import { selectAllPosts, getPostsStatus, getPostsErrors } from "./postsSlice";
+
 const POSTS_URL = "https://jsonplaceholder.typicode.com/POSTS";
 
-import TimeAgo from "./TimeAgo";
-import ReactionButtons from "./ReactionButtons";
-import { selectAllPosts } from "./postsSlice";
-import PostAuthor from "./PostAuthor";
-
-export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  const response = await axios.get(POSTS_URL);
-  return response.data;
-});
-
 const PostList = () => {
+  const dispatch = useDispatch();
+
   const posts = useSelector(selectAllPosts);
+  const postsStatus = useSelector(getPostsStatus);
+  const error = useSelector(getPostsErrors);
+
+  useEffect(() => {
+    if (postsStatus === "idle") {
+      dispatch(fetchPosts());
+    }
+  }, [postsStatus, dispatch]);
+
   const orderedPosts = posts
     .slice()
     .sort((a, b) => b.date.localeCompare(a.date));
